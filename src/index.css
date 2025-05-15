@@ -3,7 +3,6 @@
 /* Tailwind v4 dark mode selector support */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* 🎨 Tokens */
 @theme {
   --font-instrument: "Instrument Sans", sans-serif;
 }

@@ -23,7 +23,7 @@ export function EditProfileForm({ profile, onSuccess }: Props) {
     setMessage("Saving...");
 
     try {
-      const updated = await updateProfile({
+      await updateProfile({
         bio,
         avatar: { url: avatarUrl, alt: avatarAlt },
         banner: { url: bannerUrl, alt: bannerAlt },

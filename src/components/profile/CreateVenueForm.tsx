@@ -12,7 +12,7 @@ export function CreateVenueForm({ onSuccess, onCancel }: Props) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState(0);
-  const [maxGuests, setMaxGuests] = useState(1);
+  const [maxGuests] = useState(1);
   const [media, setMedia] = useState<{ url: string; alt: string }[]>([]);
   const [newMediaUrl, setNewMediaUrl] = useState("");
   const [newMediaAlt, setNewMediaAlt] = useState("");

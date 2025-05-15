@@ -1,6 +1,6 @@
 // src/components/venue/VenueInfoSection.tsx
 import { Venue } from "../../types/Venue";
-import { CalendarDays, Check, User } from "lucide-react";
+import { Check, User } from "lucide-react";
 
 interface Props {
   venue: Venue;
