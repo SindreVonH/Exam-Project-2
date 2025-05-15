@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+/* Tailwind v4 dark mode selector support */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* 🎨 Tokens */
+@theme {
+  --font-instrument: "Instrument Sans", sans-serif;
+}
+
+/* Light mode */
+:root {
+  --color-background: #ffffff;
+  --color-surface: #f8fafc;
+  --color-emphasis: #cbd5e1;
+  --color-text: #0f172a;
+  --color-muted: #64748b;
+  --color-border: #e2e8f0;
+  --color-primary: #064979;
+  --color-primary-hover: #1e40af;
+  --color-accent: #fbbf24;
+  --color-nav-active: #1a1a1a;
+  --color-nav-inactive: #2e2e2e;
+}
+
+/* Dark mode */
+.dark {
+  --color-background: #151a1d;
+  --color-surface: #192125;
+  --color-emphasis: #cce7f4;
+  --color-text: #f8fafc;
+  --color-muted: #94a3b8;
+  --color-border: #303c3e;
+  --color-primary: #064979;
+  --color-primary-hover: #2563eb;
+  --color-accent: #facc15;
+  --color-nav-active: #ffffff;
+  --color-nav-inactive: #a7abae;
+}
