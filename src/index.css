@@ -11,6 +11,7 @@
 :root {
   --color-background: #ffffff;
   --color-surface: #f8fafc;
+  --color-surface-2: #e6ebef;
   --color-emphasis: #cbd5e1;
   --color-text: #0f172a;
   --color-muted: #64748b;
@@ -26,6 +27,7 @@
 .dark {
   --color-background: #151a1d;
   --color-surface: #192125;
+  --color-surface-2: #262f33;
   --color-emphasis: #cce7f4;
   --color-text: #f8fafc;
   --color-muted: #94a3b8;

@@ -2,7 +2,7 @@ import { ArrowUp, Instagram, Twitter } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-[var(--color-surface)] text-[var(--color-text)] font-instrument border-t border-[var(--color-border)]">
+    <footer className="bg-[var(--color-surface)]  text-[var(--color-text)] font-instrument border-t border-[var(--color-border)]">
       <div className="max-w-7xl mx-auto px-8 py-8 grid grid-cols-1 md:grid-cols-3 items-center gap-4 text-center md:text-left">
         {/* Venstre – Logo */}
         <div className="text-[32px] font-semibold">Holidaze</div>

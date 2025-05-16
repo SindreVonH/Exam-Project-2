@@ -1,30 +1,52 @@
-// src/pages/ProfilePage.tsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useProfile } from "../hooks/useProfile";
-import { EditProfileForm } from "../components/profile/EditProfileForm";
-import { CreateVenueForm } from "../components/profile/CreateVenueForm";
+import { ProfileHeader } from "../components/profile/ProfileHeader";
+import { VenueFormStepper } from "../components/profile/form/VenueFormWizard";
 import { VenueCard } from "../components/profile/VenueCard";
-import { BookingCard } from "../components/profile/BookingCard";
-import EditBookingOverlay from "../components/profile/EditBookingOverLay";
+import { BookingTabs } from "../components/profile/Bookingtabs";
+import { EditBookingOverlay } from "../components/profile/EditBookingOverLay";
+import { EditProfileOverlay } from "../components/profile/EditProfileFormOverlay";
 import { deleteBooking } from "../lib/api/bookings/deleteBooking";
+import { deleteVenue } from "../lib/api/venues/deleteVenue";
+import LayoutWrapper from "../components/commen/LayoutWrapper";
 import { toast } from "react-hot-toast";
 import type { UserBooking } from "../types/Booking";
+import type { Venue } from "../types/Venue";
 
 export default function ProfilePage() {
   const { profile, isLoading, isError, refetch } = useProfile();
   const [isEditing, setIsEditing] = useState(false);
-  const [isCreatingVenue, setIsCreatingVenue] = useState(false);
-  const [activeTab, setActiveTab] = useState("venues");
+  const [activeTab, setActiveTab] = useState("bookings");
+
   const [editingBooking, setEditingBooking] = useState<UserBooking | null>(null);
+  const [editingVenue, setEditingVenue] = useState<Venue | null>(null);
+  const [venues, setVenues] = useState<Venue[]>([]);
+
+  useEffect(() => {
+    setVenues(profile?.venues || []);
+  }, [profile?.venues]);
 
   const handleDeleteBooking = async (bookingId: string) => {
     try {
       await deleteBooking(bookingId);
       toast.success("Booking deleted");
-      refetch();
       setEditingBooking(null);
+      refetch();
     } catch (err: any) {
       toast.error(err.message || "Failed to delete booking");
+    }
+  };
+
+  const handleDeleteVenue = async (venueId: string) => {
+    const confirmed = confirm("Are you sure you want to delete this venue?");
+    if (!confirmed) return;
+
+    try {
+      await deleteVenue(venueId);
+      setVenues((prev) => prev.filter((v) => v.id !== venueId));
+      toast.success("Venue deleted");
+    } catch (err: any) {
+      toast.error(err.message || "Failed to delete venue");
     }
   };
 
@@ -32,135 +54,86 @@ export default function ProfilePage() {
   if (isError || !profile) return <div className="p-4">Error loading profile.</div>;
 
   return (
-    <div className="p-4 space-y-6 relative">
-      {/* Banner & Avatar */}
-      <div className="flex flex-col items-center relative">
-        <img
-          src={profile.banner?.url || "/placeholder.jpg"}
-          alt={profile.banner?.alt || "Banner"}
-          className="w-full max-w-4xl h-48 object-cover rounded-lg mb-4"
-        />
-        <img
-          src={profile.avatar?.url || "/placeholder.jpg"}
-          alt={profile.avatar?.alt || "Avatar"}
-          className="w-32 h-32 rounded-full border-4 border-white -mt-16 shadow-md"
-        />
-        <h1 className="text-2xl font-bold mt-2">{profile.name}</h1>
-        <p className="text-gray-500">{profile.email}</p>
-        <p className="text-sm text-gray-400">{profile.venueManager ? "Venue Manager" : "Guest"}</p>
+    <main className="min-h-screen bg-[var(--color-background)] text-[var(--color-text)] font-instrument">
+      <LayoutWrapper>
+        <div className="space-y-6 max-w-7xl mx-auto">
+          <ProfileHeader
+            profile={profile}
+            onEdit={() => setIsEditing(true)}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+          />
 
-        <button
-          onClick={() => setIsEditing((prev) => !prev)}
-          className="absolute top-2 right-2 px-4 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
-        >
-          {isEditing ? "Close" : "Edit"}
-        </button>
-
-        {profile.venueManager && (
-          <button
-            onClick={() => setIsCreatingVenue(true)}
-            className="absolute top-2 left-2 px-4 py-1 text-sm bg-green-600 text-white rounded hover:bg-green-700"
-          >
-            + Create Venue
-          </button>
-        )}
-      </div>
-
-      {/* Tabs */}
-      <div className="flex justify-center gap-4 mt-6">
-        {["venues", "bookings", "favorites"].map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`px-4 py-2 rounded ${
-              activeTab === tab ? "bg-blue-600 text-white" : "bg-zinc-200"
-            }`}
-          >
-            {tab === "venues" ? "Created Venues" : tab === "bookings" ? "Bookings" : "Favorites"}
-          </button>
-        ))}
-      </div>
-
-      {/* Edit Booking Modal */}
-      {editingBooking && (
-        <EditBookingOverlay
-          booking={editingBooking}
-          onClose={() => {
-            setEditingBooking(null);
-            refetch();
-          }}
-          onDelete={handleDeleteBooking}
-        />
-      )}
-
-      {/* Forms */}
-      {isEditing && (
-        <EditProfileForm
-          profile={profile}
-          onSuccess={() => {
-            refetch();
-            setIsEditing(false);
-          }}
-        />
-      )}
-
-      {isCreatingVenue && (
-        <CreateVenueForm
-          onSuccess={() => {
-            refetch();
-            setIsCreatingVenue(false);
-          }}
-          onCancel={() => setIsCreatingVenue(false)}
-        />
-      )}
-
-      {/* Venues */}
-      {activeTab === "venues" && profile.venueManager && (
-        <section>
-          <h2 className="text-xl font-semibold mb-4">Your Venues</h2>
-          {profile.venues?.length ? (
-            <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-              {profile.venues.map((venue) => (
-                <VenueCard key={venue.id} venue={venue} />
-              ))}
-            </div>
-          ) : (
-            <p>You haven’t created any venues yet.</p>
+          {isEditing && (
+            <EditProfileOverlay
+              profile={profile}
+              onClose={() => setIsEditing(false)}
+              onSuccess={() => {
+                setIsEditing(false);
+                refetch();
+              }}
+            />
           )}
-        </section>
-      )}
 
-      {/* Bookings */}
-      {activeTab === "bookings" && (
-        <section>
-          <h2 className="text-xl font-semibold mb-2">Your Bookings</h2>
-          {profile.bookings?.length ? (
-            <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-              {profile.bookings.map((booking) => (
-                <div key={booking.id} className="relative group">
-                  <BookingCard booking={booking} />
-                  <button
-                    onClick={() => setEditingBooking(booking)}
-                    className="absolute top-2 right-2 text-xs bg-blue-700 hover:bg-blue-800 text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition"
-                  >
-                    Edit
-                  </button>
+          {activeTab === "create" && (
+            <VenueFormStepper
+              mode="create"
+              onCancel={() => setActiveTab("venues")}
+              onSubmit={async () => {
+                setActiveTab("venues");
+                refetch();
+              }}
+            />
+          )}
+
+          {activeTab === "bookings" && (
+            <BookingTabs bookings={profile.bookings || []} onEditBooking={setEditingBooking} />
+          )}
+
+          {activeTab === "venues" && profile.venueManager && (
+            <section>
+              <h2 className="text-xl font-semibold mb-4 text-[var(--color-text)]">Your Venues</h2>
+              {venues.length ? (
+                <div className="flex flex-col gap-4">
+                  {venues.map((venue) => (
+                    <VenueCard
+                      key={venue.id}
+                      venue={venue}
+                      onEdit={() => setEditingVenue(venue)}
+                      onDelete={handleDeleteVenue}
+                    />
+                  ))}
                 </div>
-              ))}
-            </div>
-          ) : (
-            <p>You have no bookings yet.</p>
+              ) : (
+                <p className="text-[var(--color-muted)]">You haven’t created any venues yet.</p>
+              )}
+            </section>
           )}
-        </section>
-      )}
 
-      {/* Favorites */}
-      {activeTab === "favorites" && (
-        <section>
-          <h2 className="text-xl font-semibold mb-2">Your Favorites</h2>
-          <p>Coming soon...</p>
-        </section>
-      )}
-    </div>
+          {editingBooking && (
+            <EditBookingOverlay
+              booking={editingBooking}
+              onClose={() => {
+                setEditingBooking(null);
+                refetch();
+              }}
+              onDelete={handleDeleteBooking}
+            />
+          )}
+
+          {editingVenue && (
+            <VenueFormStepper
+              mode="edit"
+              initialData={editingVenue}
+              onCancel={() => setEditingVenue(null)}
+              onSubmit={async () => {
+                setEditingVenue(null);
+                refetch();
+              }}
+            />
+          )}
+        </div>
+      </LayoutWrapper>
+    </main>
   );
 }

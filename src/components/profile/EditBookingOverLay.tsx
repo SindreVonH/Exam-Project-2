@@ -1,9 +1,7 @@
-// src/components/EditBookingOverlay.tsx
-
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
 import { DayPicker } from "react-day-picker";
-import { X } from "lucide-react";
+import { X, Minus, Plus, Trash2 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { updateBooking } from "../../lib/api/bookings/editBooking";
 import { UserBooking } from "../../types/Booking";
@@ -15,13 +13,21 @@ interface Props {
   onDelete: (id: string) => void;
 }
 
-export default function EditBookingOverlay({ booking, onClose, onDelete }: Props) {
+export function EditBookingOverlay({ booking, onClose, onDelete }: Props) {
   const [range, setRange] = useState<DateRange | undefined>({
     from: new Date(booking.dateFrom),
     to: new Date(booking.dateTo),
   });
+
   const [guests, setGuests] = useState(booking.guests);
   const [loading, setLoading] = useState(false);
+
+  const nights =
+    range?.from && range.to
+      ? Math.ceil((range.to.getTime() - range.from.getTime()) / (1000 * 60 * 60 * 24))
+      : 0;
+
+  const totalPrice = nights * booking.venue.price;
 
   const handleUpdate = async () => {
     if (!range?.from || !range.to) {
@@ -53,71 +59,82 @@ export default function EditBookingOverlay({ booking, onClose, onDelete }: Props
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-80 z-50 flex justify-center items-center px-4">
-      <div className="bg-zinc-900 text-white rounded-xl p-6 w-full max-w-3xl relative shadow-lg overflow-y-auto max-h-[90vh]">
+    <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
+      <div className="bg-[var(--color-surface)] text-[var(--color-text)] rounded-xl p-6 w-full max-w-3xl relative shadow-lg">
         <button
           onClick={onClose}
-          className="absolute top-3 right-4 text-red-400 hover:text-red-600"
+          className="absolute top-4 right-4 text-[var(--color-muted)] hover:text-red-500"
         >
           <X />
         </button>
 
-        <h2 className="text-2xl font-semibold mb-4">Edit Booking</h2>
+        <h2 className="text-2xl font-semibold mb-6">Edit Booking</h2>
 
-        <div className="border p-4 rounded mb-4 bg-zinc-800">
+        {/* Calendar */}
+        <div className="bg-[var(--color-background)] p-4 rounded-lg border border-[var(--color-border)]">
           <DayPicker
             mode="range"
             selected={range}
             onSelect={setRange}
             numberOfMonths={2}
-            className="flex justify-center gap-8"
+            className="flex justify-center gap-8 text-base md:text-lg [&_.rdp-caption_label]:text-xl [&_.rdp-day]:text-lg [&_.rdp-head_cell]:text-md"
             modifiersClassNames={{
-              selected: "bg-blue-600 text-white",
-              range_start: "rounded-l-full bg-blue-600 text-white",
-              range_end: "rounded-r-full bg-blue-600 text-white",
-              range_middle: "bg-blue-500 text-white",
+              selected: "bg-[var(--color-primary)] text-white",
+              range_start: "rounded-l-full bg-[var(--color-primary)] text-white",
+              range_end: "rounded-r-full bg-[var(--color-primary)] text-white",
+              range_middle: "bg-blue-700 text-white",
               today: "border border-blue-400",
-              disabled: "text-gray-500 opacity-40",
+              disabled: "opacity-30",
             }}
           />
         </div>
 
-        <div className="mb-4">
-          <label className="block mb-1 text-sm font-medium">Guests</label>
-          <div className="flex items-center gap-2">
+        {/* Guests and total */}
+        <div className="mt-6 flex flex-col gap-4">
+          <div className="flex items-center justify-between">
+            <p className="text-lg font-semibold">Guests</p>
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => setGuests((g) => Math.max(1, g - 1))}
+                className="p-2 rounded border border-[var(--color-border)] hover:bg-[var(--color-border)]"
+              >
+                <Minus size={20} />
+              </button>
+              <span className="text-xl font-bold">{guests}</span>
+              <button
+                onClick={() => setGuests((g) => g + 1)}
+                className="p-2 rounded border border-[var(--color-border)] hover:bg-[var(--color-border)]"
+              >
+                <Plus size={20} />
+              </button>
+            </div>
+          </div>
+
+          <div className="pt-2">
+            <p className="text-xl font-semibold">Total: ${totalPrice}</p>
+            <p className="text-sm text-[var(--color-muted)]">
+              ({nights} night{nights !== 1 ? "s" : ""} x ${booking.venue.price})
+            </p>
+          </div>
+
+          <div className="flex justify-between gap-4 mt-4">
             <button
-              onClick={() => setGuests((prev) => Math.max(1, prev - 1))}
-              className="bg-zinc-700 px-3 py-1 rounded hover:bg-zinc-600"
+              onClick={handleDeleteClick}
+              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded flex items-center gap-2"
               disabled={loading}
             >
-              −
+              <Trash2 size={18} />
+              Delete
             </button>
-            <span className="min-w-[2rem] text-center">{guests}</span>
+
             <button
-              onClick={() => setGuests((prev) => prev + 1)}
-              className="bg-zinc-700 px-3 py-1 rounded hover:bg-zinc-600"
+              onClick={handleUpdate}
               disabled={loading}
+              className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white px-6 py-2 rounded text-lg font-medium"
             >
-              +
+              {loading ? "Saving..." : "Save changes"}
             </button>
           </div>
-        </div>
-
-        <div className="flex justify-between items-center mt-6">
-          <button
-            onClick={handleDeleteClick}
-            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
-            disabled={loading}
-          >
-            Delete Booking
-          </button>
-          <button
-            onClick={handleUpdate}
-            disabled={loading}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
-          >
-            {loading ? "Saving..." : "Save Changes"}
-          </button>
         </div>
       </div>
     </div>
