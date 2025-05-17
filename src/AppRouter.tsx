@@ -12,16 +12,20 @@ import DesignSystem from "./pages/DesignSystem";
 export default function AppRouter() {
   return (
     <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/venues/:id" element={<SingleVenuePage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/test-theme" element={<DesignSystem />} />
-      </Routes>
-      <Footer /> {/* 👈 vises nederst på alle sider */}
+      <div className="flex flex-col min-h-screen">
+        <Navbar />
+        <div className="flex-1">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/venues/:id" element={<SingleVenuePage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/test-theme" element={<DesignSystem />} />
+          </Routes>
+        </div>
+        <Footer />
+      </div>
     </Router>
   );
 }

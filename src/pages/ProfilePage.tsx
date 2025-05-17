@@ -50,8 +50,21 @@ export default function ProfilePage() {
     }
   };
 
-  if (isLoading) return <div className="p-4">Loading profile...</div>;
-  if (isError || !profile) return <div className="p-4">Error loading profile.</div>;
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-text)] p-4 flex items-center justify-center">
+        Loading profile...
+      </div>
+    );
+  }
+
+  if (isError || !profile) {
+    return (
+      <div className="min-h-screen bg-[var(--color-background)] text-red-500 p-4 flex items-center justify-center">
+        Error loading profile.
+      </div>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-[var(--color-background)] text-[var(--color-text)] font-instrument">

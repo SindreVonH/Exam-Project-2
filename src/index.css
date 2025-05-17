@@ -38,3 +38,15 @@
   --color-nav-active: #ffffff;
   --color-nav-inactive: #a7abae;
 }
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-background);
+}
