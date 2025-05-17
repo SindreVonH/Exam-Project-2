@@ -17,12 +17,14 @@ export function VenueLocationSection({ venue }: Props) {
   const safeLng = location?.lng ?? 10;
 
   return (
-    <section className="bg-[var(--color-surface)] rounded-lg shadow p-4 flex flex-col lg:flex-row items-start gap-6">
+    <section className="bg-[var(--color-surface)] rounded-lg shadow p-4 sm:p-6 flex flex-col lg:flex-row gap-6">
       {/* Tekst Info */}
-      <div className="w-full lg:w-1/4 px-14 mt-16 space-y-20">
+      <div className="w-full lg:w-1/3 space-y-12 sm:space-y-16">
         <div>
-          <h2 className="text-[32px] font-semibold text-[var(--color-text)]">Location</h2>
-          <p className="text-[var(--color-muted)] text-[24px] leading-tight">
+          <h2 className="text-xl sm:text-2xl md:text-[32px] font-semibold text-[var(--color-text)]">
+            Location
+          </h2>
+          <p className="text-base sm:text-lg md:text-[24px] text-[var(--color-muted)] leading-tight mt-1">
             {location?.country || "Unknown"}
             <br />
             {location?.continent || ""}
@@ -30,8 +32,10 @@ export function VenueLocationSection({ venue }: Props) {
         </div>
 
         <div>
-          <h3 className="text-[32px] font-semibold text-[var(--color-text)]">Address</h3>
-          <p className="text-[var(--color-muted)] text-[24px] leading-tight">
+          <h3 className="text-xl sm:text-2xl md:text-[32px] font-semibold text-[var(--color-text)]">
+            Address
+          </h3>
+          <p className="text-base sm:text-lg md:text-[24px] text-[var(--color-muted)] leading-tight mt-1">
             {location?.address || "No address"}
             <br />
             {location?.city || ""}
@@ -43,7 +47,7 @@ export function VenueLocationSection({ venue }: Props) {
 
       {/* Kart */}
       {hasCoords && (
-        <div className="flex-1 w-full h-[500px] rounded-lg overflow-hidden">
+        <div className="w-full h-[200px] sm:h-[300px] md:h-[400px] rounded-lg overflow-hidden">
           <MapContainer
             center={[safeLat, safeLng]}
             zoom={13}
