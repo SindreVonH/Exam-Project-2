@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import heroImage from "../assets/hero.png";
 import { useVenues } from "../hooks/useVenues";
 import { VenueCardHome } from "../components/home/VenueCardHome";
 import LayoutWrapper from "../components/commen/LayoutWrapper";
-import { ChevronUp, ChevronDown, Minus } from "lucide-react";
+import heroImage from "../assets/hero.png";
+import { ChevronUp, ChevronDown, Minus, Loader2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const VENUES_PER_PAGE = 20;
 type SortOrder = "asc" | "desc" | "";
@@ -15,7 +16,7 @@ export default function HomePage() {
   const [sortOrder, setSortOrder] = useState<SortOrder>("");
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { venues, isLoading, isError } = useVenues(undefined, query);
+  const { venues, isLoading, isError } = useVenues(query);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,16 +58,26 @@ export default function HomePage() {
     <main className="min-h-screen bg-[var(--color-background)] text-[var(--color-text)] font-instrument">
       <LayoutWrapper>
         {/* Hero */}
-        <section className="rounded-xl overflow-hidden relative mb-6">
+        <motion.section
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="rounded-xl overflow-hidden relative mb-6"
+        >
           <img
             src={heroImage}
             alt="Hero"
             className="w-full h-[200px] sm:h-[300px] md:h-[400px] lg:h-[480px] object-cover"
           />
-          <h1 className="absolute inset-0 flex items-center justify-center text-xl sm:text-3xl md:text-4xl font-bold text-white px-6 text-center">
+          <motion.h1
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            className="absolute inset-0 flex items-center justify-center text-xl sm:text-3xl md:text-4xl font-bold text-white px-6 text-center"
+          >
             Find your perfect getaway
-          </h1>
-        </section>
+          </motion.h1>
+        </motion.section>
 
         {/* Search */}
         <form onSubmit={handleSearchSubmit} className="flex flex-col sm:flex-row gap-3 pt-4">
@@ -84,6 +95,13 @@ export default function HomePage() {
             Search
           </button>
         </form>
+
+        {/* Spinner */}
+        {isLoading && (
+          <div className="flex justify-center py-6">
+            <Loader2 className="animate-spin text-[var(--color-muted)] w-6 h-6" />
+          </div>
+        )}
 
         {/* Filters */}
         <section className="flex gap-3 flex-wrap text-lg sm:text-2xl font-medium text-[var(--color-text)] pt-6">
@@ -115,20 +133,36 @@ export default function HomePage() {
           })}
         </section>
 
+        {/* Result Info */}
+        {query && !isLoading && (
+          <p className="text-sm text-[var(--color-muted)] text-center pt-4">
+            Showing results for <span className="font-semibold">"{query}"</span>
+          </p>
+        )}
+
         {/* Venue Grid */}
         <section className="pt-6">
-          {isLoading && <p>Loading venues...</p>}
           {isError && <p className="text-red-500">Error loading venues</p>}
           {!isLoading && !isError && paginatedVenues.length === 0 && (
             <p className="text-[var(--color-muted)] text-center pt-4">No results found.</p>
           )}
+
           {!isLoading && !isError && paginatedVenues.length > 0 && (
             <>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
-                {paginatedVenues.map((venue) => (
-                  <VenueCardHome key={venue.id} venue={venue} />
-                ))}
-              </ul>
+              <AnimatePresence>
+                <motion.ul
+                  key={query + currentPage}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6"
+                >
+                  {paginatedVenues.map((venue) => (
+                    <VenueCardHome key={venue.id} venue={venue} />
+                  ))}
+                </motion.ul>
+              </AnimatePresence>
 
               {/* Pagination */}
               <div className="flex justify-center items-center gap-4 mt-6 text-base sm:text-lg">

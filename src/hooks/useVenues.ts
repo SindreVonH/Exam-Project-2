@@ -1,8 +1,9 @@
+// src/hooks/useVenues.ts
 import { useEffect, useState } from "react";
 import { getVenues } from "../lib/api/venues/getVenues";
 import type { Venue } from "../types/Venue";
 
-export function useVenues(filterCountry?: string, searchQuery?: string) {
+export function useVenues(query: string = "") {
   const [venues, setVenues] = useState<Venue[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
@@ -12,13 +13,8 @@ export function useVenues(filterCountry?: string, searchQuery?: string) {
       try {
         setIsLoading(true);
         setIsError(false);
-
-        const { data } = await getVenues(searchQuery);
-        const filtered = filterCountry
-          ? data.filter((venue) => venue.location?.country === filterCountry)
-          : data;
-
-        setVenues(filtered);
+        const { data } = await getVenues(query);
+        setVenues(data);
       } catch (error) {
         console.error("Error fetching venues:", error);
         setIsError(true);
@@ -28,7 +24,7 @@ export function useVenues(filterCountry?: string, searchQuery?: string) {
     }
 
     fetchVenues();
-  }, [filterCountry, searchQuery]);
+  }, [query]);
 
   return { venues, isLoading, isError };
 }

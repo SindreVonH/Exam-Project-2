@@ -3,8 +3,11 @@ import { API_BASE } from "../../constants";
 import type { Venue } from "../../../types/Venue";
 
 export async function getVenues(query?: string): Promise<{ data: Venue[] }> {
-  const searchParam = query ? `?q=${encodeURIComponent(query)}` : "";
-  const response = await fetch(`${API_BASE}/holidaze/venues${searchParam}`);
+  const endpoint = query
+    ? `${API_BASE}/holidaze/venues/search?q=${encodeURIComponent(query)}`
+    : `${API_BASE}/holidaze/venues`;
+
+  const response = await fetch(endpoint);
 
   if (!response.ok) {
     const error = await response.json();
