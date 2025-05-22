@@ -18,9 +18,6 @@ export default function Footer() {
             <ArrowUp className="w-4 h-4" />
             Back to top
           </button>
-          <address className="not-italic text-sm text-[var(--color-muted)]">
-            © Holidaze 2025
-          </address>
         </div>
 
         {/* Høyre – SoMe lenker */}

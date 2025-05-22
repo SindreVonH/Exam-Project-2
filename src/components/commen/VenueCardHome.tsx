@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import type { Venue } from "../../types/Venue";
+import fallbackImage from "../../assets/fallback.jpg"; // ✅ import her
 
 interface Props {
   venue: Venue;
@@ -16,8 +17,11 @@ export function VenueCardHome({ venue }: Props) {
     >
       {/* Image */}
       <img
-        src={media?.[0]?.url || "/placeholder.jpg"}
+        src={media?.[0]?.url || fallbackImage}
         alt={media?.[0]?.alt || name}
+        onError={(e) => {
+          (e.target as HTMLImageElement).src = fallbackImage;
+        }}
         className="w-full h-70 object-cover"
       />
 
@@ -34,7 +38,7 @@ export function VenueCardHome({ venue }: Props) {
         </div>
 
         {/* Price + Beds */}
-        <div className="flex items-center justify-between text-[32px] font-medium text-[var(--color-emphasis)]">
+        <div className="flex items-center justify-between text-[32px] font-medium text-[var(--color-text)]">
           <span>${price} / Night</span>
           <span>
             {maxGuests} {maxGuests === 1 ? "Bed" : "Beds"}

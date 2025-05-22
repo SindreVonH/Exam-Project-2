@@ -1,5 +1,6 @@
 import { Venue } from "../../types/Venue";
-import { useMediaQuery } from "react-responsive"; // Husk å installere: npm i react-responsive
+import { useMediaQuery } from "react-responsive";
+import { VenueImageCarousel } from "./ImageCarousel"; // Husk å opprette denne komponenten
 
 interface Props {
   venue: Venue;
@@ -10,7 +11,7 @@ export function VenueHeaderSection({ venue, onBook }: Props) {
   return (
     <div className="bg-[var(--color-surface)] rounded-lg shadow p-4 space-y-6">
       <VenueHeader fullTitle={venue.name} onBook={onBook} />
-      <VenueImageGallery media={venue.media} altFallback={venue.name} />
+      <VenueImageCarousel media={venue.media} altFallback={venue.name} />
       <VenueRating rating={venue.rating} />
     </div>
   );
@@ -18,40 +19,24 @@ export function VenueHeaderSection({ venue, onBook }: Props) {
 
 // === VenueHeader ===
 function VenueHeader({ fullTitle, onBook }: { fullTitle: string; onBook: () => void }) {
-  const isMobile = useMediaQuery({ maxWidth: 639 }); // sm breakpoint
-  const maxLength = isMobile ? 15 : 30;
+  const isMobile = useMediaQuery({ maxWidth: 639 });
+  const maxLength = isMobile ? 30 : 30;
 
   const displayTitle =
     fullTitle.length > maxLength ? fullTitle.slice(0, maxLength).trim() + "…" : fullTitle;
 
   return (
     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-2">
-      <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-[var(--color-text)]">
+      <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[var(--color-text)]">
         {displayTitle}
       </h1>
       <button
         onClick={onBook}
-        className="text-lg sm:text-xl md:text-2xl px-4 sm:px-5 py-3 sm:py-4 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white transition"
+        className="text-sm sm:text-base md:text-lg px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white transition"
       >
         Book now
       </button>
     </div>
-  );
-}
-
-// === VenueImageGallery ===
-function VenueImageGallery({
-  media,
-  altFallback,
-}: {
-  media: { url: string; alt?: string }[];
-  altFallback: string;
-}) {
-  const firstImage = media?.[0]?.url || "/placeholder.jpg";
-  const altText = media?.[0]?.alt || altFallback;
-
-  return (
-    <img src={firstImage} alt={altText} className="w-full h-60 sm:h-96 object-cover rounded-xl" />
   );
 }
 

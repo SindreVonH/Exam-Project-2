@@ -25,7 +25,7 @@ export function BookingCard({ booking, onEdit }: Props) {
         <div className="p-4 space-y-1">
           <h3 className="text-lg font-semibold leading-snug">{venue.name}</h3>
           <p className="text-sm text-[var(--color-muted)]">{venue.location?.city || "Unknown"}</p>
-          <p className="text-sm font-medium text-white mt-2">
+          <p className="text-sm font-medium text-[var(--color-muted) mt-2">
             <time dateTime={dateFrom}>{format(fromDate, "MMM d")}</time> –{" "}
             <time dateTime={dateTo}>{format(toDate, "d")}</time>
           </p>

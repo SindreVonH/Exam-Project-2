@@ -1,10 +1,9 @@
-import { useState } from "react";
-import { DateRange } from "react-day-picker";
-import { createBooking } from "../../lib/api/bookings/createBooking";
-import { DayPicker } from "react-day-picker";
+import { useEffect, useState } from "react";
+import { DayPicker, DateRange } from "react-day-picker";
 import { X, Minus, Plus } from "lucide-react";
-import type { Venue } from "../../types/Venue";
 import { toast } from "react-hot-toast";
+import { Venue } from "../../types/Venue";
+import { createBooking } from "../../lib/api/bookings/createBooking";
 import "react-day-picker/dist/style.css";
 
 interface Props {
@@ -17,13 +16,22 @@ export function BookVenueOverlay({ venue, onClose }: Props) {
   const [guests, setGuests] = useState(1);
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, []);
+
   const disabledDates =
     venue.bookings?.flatMap((b) => {
       const from = new Date(b.dateFrom);
       const to = new Date(b.dateTo);
-      const days = [];
-      for (let d = new Date(from); d <= to; d.setDate(d.getDate() + 1)) {
+      const days: Date[] = [];
+      const d = new Date(from);
+      while (d <= to) {
         days.push(new Date(d));
+        d.setDate(d.getDate() + 1);
       }
       return days;
     }) || [];
@@ -59,20 +67,25 @@ export function BookVenueOverlay({ venue, onClose }: Props) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 overflow-y-auto">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label="Book venue"
+      className="fixed inset-0 z-[9999] bg-black/80 flex items-center justify-center p-4 overflow-y-auto"
+      style={{ minHeight: "100vh", height: "100dvh" }}
+    >
       <div className="bg-[var(--color-surface)] text-[var(--color-text)] rounded-xl p-4 sm:p-6 w-full max-w-3xl relative shadow-lg">
-        {/* Close button */}
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-[var(--color-muted)] hover:text-red-500"
+          aria-label="Close booking modal"
         >
           <X />
         </button>
 
-        <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">Bookings</h2>
+        <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">Book this venue</h2>
 
-        {/* Calendar */}
-        <div className="bg-[var(--color-background)] p-4 rounded-lg border border-[var(--color-border)]">
+        <section className="bg-[var(--color-background)] p-4 rounded-lg border border-[var(--color-border)]">
           <DayPicker
             mode="range"
             selected={range}
@@ -90,16 +103,16 @@ export function BookVenueOverlay({ venue, onClose }: Props) {
             }}
           />
           <p className="text-xs text-[var(--color-muted)] mt-2">Grayed out = booked</p>
-        </div>
+        </section>
 
-        {/* Guests and total */}
-        <div className="mt-6 flex flex-col gap-4">
+        <section className="mt-6 flex flex-col gap-4">
           <div className="flex items-center justify-between">
-            <p className="text-base sm:text-lg font-semibold">Guests</p>
+            <label className="text-base sm:text-lg font-semibold">Guests</label>
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setGuests((g) => Math.max(1, g - 1))}
                 className="p-2 rounded border border-[var(--color-border)] hover:bg-[var(--color-border)]"
+                aria-label="Decrease guests"
               >
                 <Minus size={20} />
               </button>
@@ -107,6 +120,7 @@ export function BookVenueOverlay({ venue, onClose }: Props) {
               <button
                 onClick={() => setGuests((g) => Math.min(venue.maxGuests, g + 1))}
                 className="p-2 rounded border border-[var(--color-border)] hover:bg-[var(--color-border)]"
+                aria-label="Increase guests"
               >
                 <Plus size={20} />
               </button>
@@ -127,7 +141,7 @@ export function BookVenueOverlay({ venue, onClose }: Props) {
           >
             {loading ? "Booking..." : "Book now"}
           </button>
-        </div>
+        </section>
       </div>
     </div>
   );

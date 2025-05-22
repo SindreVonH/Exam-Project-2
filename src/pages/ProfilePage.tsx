@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useProfile } from "../hooks/useProfile";
 import { ProfileHeader } from "../components/profile/ProfileHeader";
-import { VenueFormStepper } from "../components/profile/form/VenueFormWizard";
+import { VenueFormStepper } from "../components/profile/CreateVenueOverlay";
 import { VenueCard } from "../components/profile/VenueCard";
 import { BookingTabs } from "../components/profile/Bookingtabs";
 import { EditBookingOverlay } from "../components/profile/EditBookingOverLay";

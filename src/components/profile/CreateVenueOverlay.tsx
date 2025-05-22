@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Venue } from "../../../types/Venue";
-import { VenueInfoStep } from "./VenueInfoStep";
-import { VenueMediaStep } from "./VenueMediaStep";
-import { VenueLocationStep } from "./VenueLocationStep";
-import { VenuePricingStep } from "./VenuePricingStep";
-import { updateVenue } from "../../../lib/api/venues/updateVenue";
-import { createVenue } from "../../../lib/api/venues/createVenue";
+import { Venue } from "../../types/Venue";
+import { VenueInfoStep } from "./form/VenueInfoStep";
+import { VenueMediaStep } from "./form/VenueMediaStep";
+import { VenueLocationStep } from "./form/VenueLocationStep";
+import { VenuePricingStep } from "./form/VenuePricingStep";
+import { updateVenue } from "../../lib/api/venues/updateVenue";
+import { createVenue } from "../../lib/api/venues/createVenue";
 import { toast } from "react-hot-toast";
 
 interface Props {

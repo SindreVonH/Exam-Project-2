@@ -1,7 +1,7 @@
 // src/components/venue/form/VenueLocationStep.tsx
 import { Dispatch, SetStateAction } from "react";
 import type { Venue } from "../../../types/Venue";
-import { MapClickSelector } from "../../venue/MapClickSelector";
+import { MapClickSelector } from "../../commen/MapClickSelector";
 
 interface Props {
   data: Partial<Venue>;
