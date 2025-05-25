@@ -2,6 +2,7 @@ import { format } from "date-fns";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { Venue } from "../../types/Venue";
+import { BookNowButton } from "../common/BooknowButton";
 
 interface Props {
   venue: Venue;
@@ -25,17 +26,17 @@ export function InfoSectionBooking({ venue, onBook }: Props) {
   return (
     <aside
       className="
-    md:w-[300px]
-    bg-[var(--color-surface)]
-    rounded-lg p-4 border border-[var(--color-border)]
-    space-y-6
-    md:sticky md:top-6
-    max-h-[calc(100vh-48px)] overflow-y-auto
-  "
+        md:w-[300px]
+        bg-[var(--color-surface)]
+        rounded-lg p-4 border border-[var(--color-border)]
+        space-y-6
+        md:sticky md:top-6
+        max-h-[calc(100vh-48px)] overflow-y-auto
+      "
       aria-label="Booking information"
     >
       <Calendar disabledDates={disabledDates} />
-      <BookNowButton onClick={onBook} />
+      <BookNowButton onBook={onBook} fullWidth />
       <VenueMeta venue={venue} />
     </aside>
   );
@@ -55,9 +56,9 @@ function Calendar({ disabledDates }: { disabledDates: Date[] }) {
           day: "text-sm h-8 w-10 p-2 leading-none",
           row: "mb-0.5",
           button_previous:
-            "text-[var(--color-text)] dark:text-[var(--color-text)] hover:text-[var(--color-primary-hover)] [&>svg]:stroke-current [&>svg]:fill-current transition",
+            "text-[var(--color-text)] hover:text-[var(--color-primary-hover)] [&>svg]:stroke-current [&>svg]:fill-current transition",
           button_next:
-            "text-[var(--color-text)] dark:text-[var(--color-text)] hover:text-[var(--color-primary-hover)] [&>svg]:stroke-current [&>svg]:fill-current transition",
+            "text-[var(--color-text)] hover:text-[var(--color-primary-hover)] [&>svg]:stroke-current [&>svg]:fill-current transition",
         }}
         modifiersClassNames={{
           disabled: "text-gray-400 opacity-40 line-through",
@@ -70,18 +71,6 @@ function Calendar({ disabledDates }: { disabledDates: Date[] }) {
         }}
       />
     </div>
-  );
-}
-
-// === Book now button ===
-function BookNowButton({ onClick }: { onClick: () => void }) {
-  return (
-    <button
-      onClick={onClick}
-      className="w-full bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white text-base py-2 rounded"
-    >
-      Book now
-    </button>
   );
 }
 

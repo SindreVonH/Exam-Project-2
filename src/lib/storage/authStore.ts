@@ -1,4 +1,3 @@
-// src/lib/storage/authStore.ts
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { loginUser } from "../api/auth/loginUser";
@@ -13,16 +12,23 @@ export type AuthState = {
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string, venueManager: boolean) => Promise<void>;
   logout: () => void;
+
+  // 🔎 Derived state helpers
+  isLoggedIn: boolean;
+  isVenueManager: boolean;
+  userName: string | null;
 };
 
-// Initial state values
 const initialState = {
-  user: null as User | null,
-  accessToken: null as string | null,
-  apiKey: null as string | null,
+  user: null,
+  accessToken: null,
+  apiKey: null,
+  isLoggedIn: false,
+  isVenueManager: false,
+  userName: null,
 };
 
-// Auth action implementations
+// Auth actions
 const authActions = (set: any, get: any) => ({
   async login(email: string, password: string) {
     const res = await loginUser({ email, password });
@@ -33,30 +39,37 @@ const authActions = (set: any, get: any) => ({
       key = keyData.key;
     }
 
+    const user = {
+      name: res.data.name,
+      email: res.data.email,
+      avatar: res.data.avatar?.url || "",
+      banner: res.data.banner?.url || "",
+      venueManager: res.data.venueManager ?? false,
+    };
+
     set({
       accessToken: res.data.accessToken,
       apiKey: key,
-      user: {
-        name: res.data.name,
-        email: res.data.email,
-        avatar: res.data.avatar?.url || "",
-        banner: res.data.banner?.url || "",
-        venueManager: res.data.venueManager ?? false,
-      },
+      user,
+      isLoggedIn: true,
+      isVenueManager: !!user.venueManager,
+      userName: user.name,
     });
   },
 
   async register(name: string, email: string, password: string, venueManager: boolean) {
     await registerUser({ name, email, password, venueManager });
-    // UI kan navigere til /login etterpå
+    // Naviger til /login etterpå i UI
   },
 
   logout() {
-    set({ user: null, accessToken: null, apiKey: null });
+    set({
+      ...initialState,
+    });
   },
 });
 
-// Create the Zustand store with persistence
+// Create Zustand store with persistence
 export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
@@ -64,7 +77,7 @@ export const useAuthStore = create<AuthState>()(
       ...authActions(set, get),
     }),
     {
-      name: "auth-storage", // localStorage key
+      name: "auth-storage",
     }
   )
 );

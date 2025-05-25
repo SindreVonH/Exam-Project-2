@@ -2,6 +2,7 @@ import { Venue } from "../../types/Venue";
 import { Star } from "lucide-react";
 import { useMediaQuery } from "react-responsive";
 import { VenueImageCarousel } from "./ImageCarousel";
+import { BookNowButton } from "../common/BooknowButton"; // 👈 import ny knapp
 
 interface Props {
   venue: Venue;
@@ -31,12 +32,7 @@ function VenueHeader({ fullTitle, onBook }: { fullTitle: string; onBook: () => v
       <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[var(--color-text)]">
         {displayTitle}
       </h1>
-      <button
-        onClick={onBook}
-        className="text-sm sm:text-base md:text-lg px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white transition"
-      >
-        Book now
-      </button>
+      <BookNowButton onBook={onBook} />
     </div>
   );
 }

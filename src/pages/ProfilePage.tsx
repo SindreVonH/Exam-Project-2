@@ -11,6 +11,8 @@ import { deleteVenue } from "../lib/api/venues/deleteVenue";
 import LayoutWrapper from "../components/common/LayoutWrapper";
 import { toast } from "react-hot-toast";
 import { ProfileSkeleton } from "../components/profile/ProfileSkeleton";
+import { AuthGuard } from "../components/auth/AuthGuard";
+
 import type { UserBooking } from "../types/Booking";
 import type { Venue } from "../types/Venue";
 
@@ -70,86 +72,88 @@ export default function ProfilePage() {
   }
 
   return (
-    <main className="min-h-screen bg-[var(--color-background)] text-[var(--color-text)] font-instrument">
-      <LayoutWrapper>
-        <div className="space-y-6 max-w-7xl mx-auto">
-          <ProfileHeader
-            profile={profile}
-            onEdit={() => setIsEditing(true)}
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-          />
-
-          {isEditing && (
-            <EditProfileOverlay
+    <AuthGuard>
+      <main className="min-h-screen bg-[var(--color-background)] text-[var(--color-text)] font-instrument">
+        <LayoutWrapper>
+          <div className="space-y-6 max-w-7xl mx-auto">
+            <ProfileHeader
               profile={profile}
-              onClose={() => setIsEditing(false)}
-              onSuccess={() => {
-                setIsEditing(false);
-                refetch();
-              }}
+              onEdit={() => setIsEditing(true)}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
             />
-          )}
 
-          {activeTab === "create" && (
-            <VenueFormStepper
-              mode="create"
-              onCancel={() => setActiveTab("venues")}
-              onSubmit={async () => {
-                setActiveTab("venues");
-                refetch();
-              }}
-            />
-          )}
+            {isEditing && (
+              <EditProfileOverlay
+                profile={profile}
+                onClose={() => setIsEditing(false)}
+                onSuccess={() => {
+                  setIsEditing(false);
+                  refetch();
+                }}
+              />
+            )}
 
-          {activeTab === "bookings" && (
-            <BookingTabs bookings={profile.bookings || []} onEditBooking={setEditingBooking} />
-          )}
+            {activeTab === "create" && (
+              <VenueFormStepper
+                mode="create"
+                onCancel={() => setActiveTab("venues")}
+                onSubmit={async () => {
+                  setActiveTab("venues");
+                  refetch();
+                }}
+              />
+            )}
 
-          {activeTab === "venues" && profile.venueManager && (
-            <section>
-              <h2 className="text-xl font-semibold mb-4 text-[var(--color-text)]">Your Venues</h2>
-              {venues.length ? (
-                <div className="flex flex-col gap-4">
-                  {venues.map((venue) => (
-                    <VenueCard
-                      key={venue.id}
-                      venue={venue}
-                      onEdit={() => setEditingVenue(venue)}
-                      onDelete={handleDeleteVenue}
-                    />
-                  ))}
-                </div>
-              ) : (
-                <p className="text-[var(--color-muted)]">You haven’t created any venues yet.</p>
-              )}
-            </section>
-          )}
+            {activeTab === "bookings" && (
+              <BookingTabs bookings={profile.bookings || []} onEditBooking={setEditingBooking} />
+            )}
 
-          {editingBooking && (
-            <EditBookingOverlay
-              booking={editingBooking}
-              onClose={() => {
-                setEditingBooking(null);
-                refetch();
-              }}
-              onDelete={handleDeleteBooking}
-            />
-          )}
+            {activeTab === "venues" && profile.venueManager && (
+              <section>
+                <h2 className="text-xl font-semibold mb-4 text-[var(--color-text)]">Your Venues</h2>
+                {venues.length ? (
+                  <div className="flex flex-col gap-4">
+                    {venues.map((venue) => (
+                      <VenueCard
+                        key={venue.id}
+                        venue={venue}
+                        onEdit={() => setEditingVenue(venue)}
+                        onDelete={handleDeleteVenue}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-[var(--color-muted)]">You haven’t created any venues yet.</p>
+                )}
+              </section>
+            )}
 
-          {editingVenue && (
-            <VenueFormStepper
-              mode="edit"
-              initialData={editingVenue}
-              onCancel={() => setEditingVenue(null)}
-              onSubmit={async () => {
-                setEditingVenue(null);
-                refetch();
-              }}
-            />
-          )}
-        </div>
-      </LayoutWrapper>
-    </main>
+            {editingBooking && (
+              <EditBookingOverlay
+                booking={editingBooking}
+                onClose={() => {
+                  setEditingBooking(null);
+                  refetch();
+                }}
+                onDelete={handleDeleteBooking}
+              />
+            )}
+
+            {editingVenue && (
+              <VenueFormStepper
+                mode="edit"
+                initialData={editingVenue}
+                onCancel={() => setEditingVenue(null)}
+                onSubmit={async () => {
+                  setEditingVenue(null);
+                  refetch();
+                }}
+              />
+            )}
+          </div>
+        </LayoutWrapper>
+      </main>
+    </AuthGuard>
   );
 }
