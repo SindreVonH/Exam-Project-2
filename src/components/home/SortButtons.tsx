@@ -1,4 +1,3 @@
-// src/components/home/SortButtons.tsx
 import { ChevronUp, ChevronDown, Minus } from "lucide-react";
 
 type SortField = "price" | "beds" | "latest" | "";
@@ -18,22 +17,26 @@ export default function SortButtons({ activeSort, sortOrder, onSort }: SortButto
   ];
 
   return (
-    <section className="flex gap-3 flex-wrap text-lg sm:text-2xl font-medium text-[var(--color-text)] pt-6">
+    <section
+      className="flex gap-2 sm:gap-3 flex-wrap items-center 
+                 text-base sm:text-lg font-medium text-[var(--color-text)] 
+                 pt-2 pb-1 sm:pt-4 sm:pb-2"
+    >
       {buttons.map(({ field, label }) => {
         const isActive = activeSort === field;
         const icon = !isActive ? (
-          <Minus size={16} />
+          <Minus size={14} />
         ) : sortOrder === "asc" ? (
-          <ChevronUp size={16} />
+          <ChevronUp size={14} />
         ) : (
-          <ChevronDown size={16} />
+          <ChevronDown size={14} />
         );
 
         return (
           <button
             key={field}
             onClick={() => onSort(field)}
-            className={`flex items-center gap-1 px-3 py-1 rounded transition
+            className={`flex items-center gap-1 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded transition
               ${
                 isActive
                   ? "bg-[var(--color-primary)] text-white"

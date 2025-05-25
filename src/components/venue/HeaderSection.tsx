@@ -1,6 +1,7 @@
 import { Venue } from "../../types/Venue";
+import { Star } from "lucide-react";
 import { useMediaQuery } from "react-responsive";
-import { VenueImageCarousel } from "./ImageCarousel"; // Husk å opprette denne komponenten
+import { VenueImageCarousel } from "./ImageCarousel";
 
 interface Props {
   venue: Venue;
@@ -44,9 +45,16 @@ function VenueHeader({ fullTitle, onBook }: { fullTitle: string; onBook: () => v
 function VenueRating({ rating }: { rating: number }) {
   return (
     <div className="px-2">
-      <div className="flex items-center gap-1 text-3xl sm:text-4xl md:text-5xl text-yellow-400">
+      <div className="flex items-center gap-1">
         {Array.from({ length: 5 }, (_, i) => (
-          <span key={i}>{i < Math.round(rating) ? "★" : "☆"}</span>
+          <Star
+            key={i}
+            className={`w-6 h-6 ${
+              i < Math.round(rating)
+                ? "fill-[var(--color-accent)] text-[var(--color-accent)]"
+                : "text-[var(--color-muted)]"
+            }`}
+          />
         ))}
       </div>
     </div>

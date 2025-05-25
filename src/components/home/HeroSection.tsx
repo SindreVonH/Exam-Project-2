@@ -1,6 +1,7 @@
 // src/components/home/HeroSection.tsx
 import { motion } from "framer-motion";
-import heroImage from "../../assets/hero.png";
+import heroImagePng from "../../assets/hero.png";
+import heroImageWebp from "../../assets/hero.webp";
 
 export function HeroSection() {
   return (
@@ -10,11 +11,17 @@ export function HeroSection() {
       transition={{ duration: 0.8 }}
       className="rounded-xl overflow-hidden relative mb-6"
     >
-      <img
-        src={heroImage}
-        alt="Hero"
-        className="w-full h-[200px] sm:h-[300px] md:h-[400px] lg:h-[480px] object-cover"
-      />
+      <picture>
+        <source srcSet={heroImageWebp} type="image/webp" />
+        <img
+          src={heroImagePng}
+          alt="Hero"
+          className="w-full h-[200px] sm:h-[300px] md:h-[400px] lg:h-[480px] object-cover"
+          loading="eager"
+          fetchPriority="high"
+        />
+      </picture>
+
       <motion.h1
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}

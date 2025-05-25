@@ -60,47 +60,54 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-[var(--color-background)] text-[var(--color-text)] font-instrument">
       <LayoutWrapper>
-        <HeroSection />
-        <SearchSection
-          search={searchInput}
-          setSearch={setSearchInput}
-          onSubmit={(e) => {
-            e.preventDefault();
-            setFilters((prev) => ({
-              ...prev,
-              query: searchInput.trim(),
-              page: 1,
-            }));
-          }}
-        />
-        <SortButtons
-          activeSort={filters.sortField}
-          sortOrder={filters.sortOrder}
-          onSort={(field) =>
-            setFilters((prev) => {
-              if (prev.sortField !== field) {
-                return { ...prev, sortField: field, sortOrder: "asc", page: 1 };
-              } else if (prev.sortOrder === "asc") {
-                return { ...prev, sortOrder: "desc", page: 1 };
-              } else {
-                return { ...prev, sortField: "", sortOrder: "asc", page: 1 };
+        <div className="space-y-6 sm:space-y-10">
+          <HeroSection />
+
+          <div className="px-2 sm:px-0 space-y-4">
+            <SearchSection
+              search={searchInput}
+              setSearch={setSearchInput}
+              onSubmit={(e) => {
+                e.preventDefault();
+                setFilters((prev) => ({
+                  ...prev,
+                  query: searchInput.trim(),
+                  page: 1,
+                }));
+              }}
+            />
+            <SortButtons
+              activeSort={filters.sortField}
+              sortOrder={filters.sortOrder}
+              onSort={(field) =>
+                setFilters((prev) => {
+                  if (prev.sortField !== field) {
+                    return { ...prev, sortField: field, sortOrder: "asc", page: 1 };
+                  } else if (prev.sortOrder === "asc") {
+                    return { ...prev, sortOrder: "desc", page: 1 };
+                  } else {
+                    return { ...prev, sortField: "", sortOrder: "asc", page: 1 };
+                  }
+                })
               }
-            })
-          }
-        />
-        <VenuesList
-          venues={venues}
-          isLoading={isLoading}
-          isError={isError}
-          errorMessage={errorMessage}
-          query={filters.query}
-          currentPage={filters.page}
-        />
-        <PaginationControls
-          currentPage={filters.page}
-          totalPages={meta?.pageCount || 1}
-          setCurrentPage={(page) => setFilters((prev) => ({ ...prev, page }))}
-        />
+            />
+          </div>
+
+          <VenuesList
+            venues={venues}
+            isLoading={isLoading}
+            isError={isError}
+            errorMessage={errorMessage}
+            query={filters.query}
+            currentPage={filters.page}
+          />
+
+          <PaginationControls
+            currentPage={filters.page}
+            totalPages={meta?.pageCount || 1}
+            setCurrentPage={(page) => setFilters((prev) => ({ ...prev, page }))}
+          />
+        </div>
       </LayoutWrapper>
     </main>
   );

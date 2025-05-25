@@ -7,6 +7,7 @@ import { VenuePricingStep } from "./form/VenuePricingStep";
 import { updateVenue } from "../../lib/api/venues/updateVenue";
 import { createVenue } from "../../lib/api/venues/createVenue";
 import { toast } from "react-hot-toast";
+import { X } from "lucide-react";
 
 interface Props {
   mode: "create" | "edit";
@@ -39,27 +40,22 @@ export function VenueFormStepper({ mode, initialData = {}, onSubmit, onCancel }:
           return;
         }
 
+        const payload = {
+          name: formData.name,
+          description: formData.description,
+          price: formData.price,
+          maxGuests: formData.maxGuests,
+          media: formData.media || [],
+          meta: formData.meta,
+          location: formData.location,
+          rating: formData.rating ?? 0,
+        };
+
         if (mode === "edit" && initialData?.id) {
-          await updateVenue(initialData.id, {
-            name: formData.name,
-            description: formData.description,
-            price: formData.price,
-            maxGuests: formData.maxGuests,
-            media: formData.media,
-            meta: formData.meta,
-            location: formData.location,
-          });
+          await updateVenue(initialData.id, payload);
           toast.success("Venue updated!");
-        } else if (mode === "create") {
-          await createVenue({
-            name: formData.name,
-            description: formData.description,
-            price: formData.price,
-            maxGuests: formData.maxGuests,
-            media: formData.media || [],
-            meta: formData.meta,
-            location: formData.location,
-          });
+        } else {
+          await createVenue(payload);
           toast.success("Venue created!");
         }
 
@@ -78,17 +74,17 @@ export function VenueFormStepper({ mode, initialData = {}, onSubmit, onCancel }:
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex justify-center items-start pt-10 px-4 overflow-auto">
-      <div className="bg-[var(--color-surface)] text-[var(--color-text)] w-full max-w-3xl p-6 rounded-xl shadow-xl space-y-6">
-        <div className="flex justify-between items-center">
+      <div className="bg-[var(--color-surface)] text-[var(--color-text)] w-full max-w-3xl h-[90vh] max-h-[700px] p-6 rounded-xl shadow-xl flex flex-col">
+        <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">
             {mode === "create" ? "Create Venue" : "Edit Venue"}
           </h2>
-          <button onClick={onCancel} className="text-sm text-red-500 hover:underline">
-            Cancel
+          <button onClick={onCancel} className="hover:text-red-500">
+            <X />
           </button>
         </div>
 
-        {steps[step]}
+        <div className="flex-1 overflow-y-auto pr-2">{steps[step]}</div>
 
         <div className="flex justify-between pt-4">
           <button
@@ -103,7 +99,7 @@ export function VenueFormStepper({ mode, initialData = {}, onSubmit, onCancel }:
             className="px-4 py-2 rounded bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white"
             disabled={loading}
           >
-            {isLastStep ? (loading ? "Saving..." : "Save") : "Next"}
+            {isLastStep ? (loading ? "Creating..." : "Create") : "Next"}
           </button>
         </div>
       </div>

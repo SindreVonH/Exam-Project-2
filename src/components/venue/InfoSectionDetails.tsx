@@ -54,6 +54,10 @@ function Calendar({ disabledDates }: { disabledDates: Date[] }) {
           caption_label: "text-xl xl:text-base",
           day: "text-sm h-8 w-10 p-2 leading-none",
           row: "mb-0.5",
+          button_previous:
+            "text-[var(--color-text)] dark:text-[var(--color-text)] hover:text-[var(--color-primary-hover)] [&>svg]:stroke-current [&>svg]:fill-current transition",
+          button_next:
+            "text-[var(--color-text)] dark:text-[var(--color-text)] hover:text-[var(--color-primary-hover)] [&>svg]:stroke-current [&>svg]:fill-current transition",
         }}
         modifiersClassNames={{
           disabled: "text-gray-400 opacity-40 line-through",

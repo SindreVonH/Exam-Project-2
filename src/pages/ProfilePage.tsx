@@ -10,6 +10,7 @@ import { deleteBooking } from "../lib/api/bookings/deleteBooking";
 import { deleteVenue } from "../lib/api/venues/deleteVenue";
 import LayoutWrapper from "../components/commen/LayoutWrapper";
 import { toast } from "react-hot-toast";
+import { ProfileSkeleton } from "../components/profile/ProfileSkeleton";
 import type { UserBooking } from "../types/Booking";
 import type { Venue } from "../types/Venue";
 
@@ -52,9 +53,11 @@ export default function ProfilePage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-text)] p-4 flex items-center justify-center">
-        Loading profile...
-      </div>
+      <main className="min-h-screen bg-[var(--color-background)] text-[var(--color-text)] font-instrument">
+        <LayoutWrapper>
+          <ProfileSkeleton />
+        </LayoutWrapper>
+      </main>
     );
   }
 

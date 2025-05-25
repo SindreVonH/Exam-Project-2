@@ -64,7 +64,7 @@ function FacilityList({ facilities }: { facilities: Facility[] }) {
 
 function FacilityItem({ label, available }: Facility) {
   const Icon = available ? Check : X;
-  const iconColor = available ? "text-green-500" : "text-red-500";
+  const iconColor = available ? "text-[var(--color-muted)]" : "text-[var(--color-muted)]";
 
   return (
     <div className="flex items-center gap-2">

@@ -15,7 +15,7 @@ export function BookingCard({ booking, onEdit }: Props) {
   const label = isUpcoming ? "Upcoming" : "Past";
 
   return (
-    <article className="rounded-xl overflow-hidden bg-[var(--color-surface)] text-[var(--color-text)] shadow group relative">
+    <article className="rounded-xl overflow-hidden bg-[var(--color-surface)] text-[var(--color-text)] shadow group relative border border-[var(--color-border)]">
       <Link to={`/venues/${venue.id}`} className="block hover:opacity-90 transition">
         <img
           src={venue.media?.[0]?.url || "/placeholder.jpg"}

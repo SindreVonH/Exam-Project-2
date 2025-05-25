@@ -52,7 +52,7 @@ export default function VenuesList({
   }
 
   return (
-    <section className="pt-6">
+    <section className="pt-0">
       <AnimatePresence>
         <motion.ul
           key={query + currentPage}

@@ -59,7 +59,7 @@ function ProfileName({ profile, onEdit }: { profile: Profile; onEdit: () => void
         </h1>
         <button
           onClick={onEdit}
-          className="p-2 rounded-md text-white bg-[var(--color-border)] hover:bg-[var(--color-primary)] transition"
+          className="p-2 rounded-md text-[var(--color-text) bg-[var(--color-border)] hover:bg-[var(--color-primary)] transition"
           aria-label="Edit profile"
         >
           <Pencil size={16} />

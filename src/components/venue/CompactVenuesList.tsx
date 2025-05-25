@@ -27,7 +27,7 @@ export default function CompactVenuesList({ venues, isLoading, isError, errorMes
 
   if (isError) {
     return (
-      <div className="text-red-500 text-center pt-4">
+      <div className="text-[var(--color-text)] text-center pt-4">
         <p>{errorMessage || "Error loading related venues."}</p>
       </div>
     );

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import type { Venue } from "../../types/Venue";
-import fallbackImage from "../../assets/fallback.jpg"; // ✅ import her
+import fallbackImage from "../../assets/fallback.jpg";
 
 interface Props {
   venue: Venue;
@@ -22,23 +22,23 @@ export function VenueCardHome({ venue }: Props) {
         onError={(e) => {
           (e.target as HTMLImageElement).src = fallbackImage;
         }}
-        className="w-full h-70 object-cover"
+        className="w-full h-40 sm:h-48 md:h-70 object-cover"
       />
 
       {/* Content */}
-      <div className="p-6 flex flex-col gap-6 text-[var(--color-text)]">
+      <div className="p-4 sm:p-6 flex flex-col gap-4 sm:gap-6 text-[var(--color-text)]">
         {/* Title + Location */}
         <div className="space-y-1">
-          <h3 className="text-[32px] font-medium leading-tight break-words">
+          <h3 className="text-lg sm:text-[32px] font-medium leading-tight break-words">
             {name.length > 25 ? name.slice(0, 25).trim() + "…" : name}
           </h3>
-          <p className="text-[32px] font-normal text-[var(--color-muted)]">
+          <p className="text-sm sm:text-[32px] font-normal text-[var(--color-muted)]">
             {location?.city || "Unknown location"}
           </p>
         </div>
 
         {/* Price + Beds */}
-        <div className="flex items-center justify-between text-[32px] font-medium text-[var(--color-text)]">
+        <div className="flex items-center justify-between text-sm sm:text-[32px] font-medium text-[var(--color-text)]">
           <span>${price} / Night</span>
           <span>
             {maxGuests} {maxGuests === 1 ? "Bed" : "Beds"}
@@ -51,7 +51,7 @@ export function VenueCardHome({ venue }: Props) {
             e.stopPropagation();
             navigate(`/venues/${id}`);
           }}
-          className="self-start px-5 py-2 rounded bg-[var(--color-border)] text-[var(--color-text)] text-[24px] font-medium hover:bg-[var(--color-muted)]/20 transition"
+          className="self-start px-4 sm:px-5 py-2 rounded bg-[var(--color-border)] text-sm sm:text-[24px] text-[var(--color-text)] font-medium hover:bg-[var(--color-text)]/20 transition"
         >
           View Details
         </button>

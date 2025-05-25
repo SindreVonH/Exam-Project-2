@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
-import { DayPicker, DateRange } from "react-day-picker";
+import { useEffect } from "react";
+import { DayPicker } from "react-day-picker";
 import { X, Minus, Plus } from "lucide-react";
-import { toast } from "react-hot-toast";
 import { Venue } from "../../types/Venue";
-import { createBooking } from "../../lib/api/bookings/createBooking";
+import { useBooking } from "../../hooks/useBooking";
 import "react-day-picker/dist/style.css";
 
 interface Props {
@@ -12,9 +11,17 @@ interface Props {
 }
 
 export function BookVenueOverlay({ venue, onClose }: Props) {
-  const [range, setRange] = useState<DateRange | undefined>();
-  const [guests, setGuests] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const {
+    range,
+    setRange,
+    guests,
+    setGuests,
+    loading,
+    totalNights,
+    totalPrice,
+    disabledRanges,
+    handleBooking,
+  } = useBooking(venue, onClose);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -22,49 +29,6 @@ export function BookVenueOverlay({ venue, onClose }: Props) {
       document.body.style.overflow = "";
     };
   }, []);
-
-  const disabledDates =
-    venue.bookings?.flatMap((b) => {
-      const from = new Date(b.dateFrom);
-      const to = new Date(b.dateTo);
-      const days: Date[] = [];
-      const d = new Date(from);
-      while (d <= to) {
-        days.push(new Date(d));
-        d.setDate(d.getDate() + 1);
-      }
-      return days;
-    }) || [];
-
-  const nights =
-    range?.from && range.to
-      ? Math.ceil((range.to.getTime() - range.from.getTime()) / (1000 * 60 * 60 * 24))
-      : 0;
-
-  const totalPrice = nights * venue.price;
-
-  const handleBooking = async () => {
-    if (!range?.from || !range.to) {
-      toast.error("Please select a date range");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      await createBooking({
-        venueId: venue.id,
-        dateFrom: range.from.toISOString(),
-        dateTo: range.to.toISOString(),
-        guests,
-      });
-      toast.success("Booking successful!");
-      onClose();
-    } catch (error: any) {
-      toast.error(error.message || "Booking failed");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div
@@ -90,7 +54,7 @@ export function BookVenueOverlay({ venue, onClose }: Props) {
             mode="range"
             selected={range}
             onSelect={setRange}
-            disabled={disabledDates}
+            disabled={[{ before: new Date() }, ...disabledRanges]}
             numberOfMonths={typeof window !== "undefined" && window.innerWidth < 640 ? 1 : 2}
             className="flex justify-center gap-4 sm:gap-8 text-sm sm:text-base [&_.rdp-caption_label]:text-base sm:[&_.rdp-caption_label]:text-xl [&_.rdp-day]:text-base [&_.rdp-head_cell]:text-xs sm:[&_.rdp-head_cell]:text-sm"
             modifiersClassNames={{
@@ -130,7 +94,7 @@ export function BookVenueOverlay({ venue, onClose }: Props) {
           <div className="pt-2">
             <p className="text-lg sm:text-xl font-semibold">Total: ${totalPrice}</p>
             <p className="text-sm text-[var(--color-muted)]">
-              ({nights} night{nights !== 1 ? "s" : ""} x ${venue.price})
+              ({totalNights} night{totalNights !== 1 ? "s" : ""} x ${venue.price})
             </p>
           </div>
 
