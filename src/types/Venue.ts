@@ -47,3 +47,26 @@ export type Venue = {
     };
   }[];
 };
+
+export type CreateVenueData = {
+  name: string;
+  description: string;
+  price: number;
+  maxGuests: number;
+  media: string[];
+  meta?: {
+    wifi?: boolean;
+    parking?: boolean;
+    breakfast?: boolean;
+    pets?: boolean;
+  };
+  location?: {
+    address?: string;
+    city?: string;
+    country?: string;
+    zip?: string;
+    continent?: string;
+    lat?: number;
+    lng?: number;
+  };
+};
