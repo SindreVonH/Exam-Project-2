@@ -1,54 +1,49 @@
-# React + TypeScript + Vite
+# Holidaze
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Holidaze is a front-end application for browsing, booking, and managing vacation venues. It was developed as a solo project for the exam at Noroff. The application is connected to the official Holidaze API and supports both regular users and venue managers.
 
-Currently, two official plugins are available:
+## Live Website
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+You can access the deployed application here:  
+[https://holidaze-sm.netlify.app/](https://holidaze-sm.netlify.app/)
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- User registration and login
+- Browse a list of available venues
+- Search, filter, and sort venues
+- View detailed information about each venue
+- Book a venue using an interactive calendar
+- Favorite venues are saved locally
+- Profile page with bookings and (if applicable) owned venues
+- Venue managers can create, edit, and delete their venues
+- Fully responsive design for mobile and desktop
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-});
-```
+## Technologies Used
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- React with TypeScript
+- Vite (build tool)
+- Tailwind CSS
+- Zustand (state management)
+- React Router
+- React Day Picker (calendar)
+- ESLint and Prettier
+- Netlify (hosting)
 
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
+## Getting Started
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    "react-x": reactX,
-    "react-dom": reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs["recommended-typescript"].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-});
+To run the project locally:
+
+### Prerequisites
+
+- Node.js and npm installed
+- A code editor (VSCode is recommended)
+
+### Installation
+
+```bash
+git clone https://github.com/SindreVonH/Exam-Project-2.git
+cd holidaze
+npm install
+npm run dev
 ```

@@ -1,4 +1,3 @@
-// src/components/home/HeroSection.tsx
 import { motion } from "framer-motion";
 import heroImagePng from "../../assets/hero.png";
 import heroImageWebp from "../../assets/hero.webp";
@@ -26,7 +25,7 @@ export function HeroSection() {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.4, duration: 0.6 }}
-        className="absolute inset-0 flex items-center justify-center text-xl sm:text-3xl md:text-4xl font-bold text-white px-6 text-center"
+        className="absolute inset-0 flex items-end justify-center pb-[15%] text-xl sm:text-3xl md:text-4xl font-bold text-white px-6 text-center"
       >
         Find your perfect getaway
       </motion.h1>
