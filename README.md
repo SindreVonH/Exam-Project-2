@@ -43,7 +43,7 @@ To run the project locally:
 
 ```bash
 git clone https://github.com/SindreVonH/Exam-Project-2.git
-cd holidaze
+cd Exam-Project-2
 npm install
 npm run dev
 ```
