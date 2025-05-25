@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-/* Tailwind v4 dark mode selector support */
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {

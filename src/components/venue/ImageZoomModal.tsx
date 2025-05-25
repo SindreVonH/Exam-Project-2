@@ -28,10 +28,9 @@ export function ImageModal({ images, currentIndex, onClose, onNext, onPrev }: Pr
       style={{
         zIndex: 9999,
         minHeight: "100vh",
-        height: "100dvh", // støtter også mobil
+        height: "100dvh",
       }}
     >
-      {/* Sikrer at Leaflet sine children ikke krangler */}
       <style>
         {`
           .leaflet-container,

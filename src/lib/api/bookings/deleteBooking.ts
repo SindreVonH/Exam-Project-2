@@ -22,5 +22,5 @@ export async function deleteBooking(id: string) {
     throw new Error(error.errors?.[0]?.message || "Failed to delete booking");
   }
 
-  return true; // No body expected, so just confirm success
+  return true;
 }

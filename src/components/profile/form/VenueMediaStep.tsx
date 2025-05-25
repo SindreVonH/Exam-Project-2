@@ -1,4 +1,3 @@
-// src/components/venue/form/VenueMediaStep.tsx
 import { useState } from "react";
 import type { Venue } from "../../../types/Venue";
 import type { Dispatch, SetStateAction } from "react";

@@ -17,10 +17,18 @@ interface Props {
 }
 
 export function VenueFormStepper({ mode, initialData = {}, onSubmit, onCancel }: Props) {
+  // ===========================
+  // 🔁 Form state
+  // ===========================
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState<Partial<Venue>>(initialData);
   const [loading, setLoading] = useState(false);
 
+  const isLastStep = step === 3;
+
+  // ===========================
+  // 📦 Form steps
+  // ===========================
   const steps = [
     {
       title: "Info",
@@ -46,8 +54,9 @@ export function VenueFormStepper({ mode, initialData = {}, onSubmit, onCancel }:
     },
   ];
 
-  const isLastStep = step === steps.length - 1;
-
+  // ===========================
+  // ✅ Navigation logic
+  // ===========================
   async function handleNext() {
     const current = steps[step];
     if (current.validate) {
@@ -100,29 +109,39 @@ export function VenueFormStepper({ mode, initialData = {}, onSubmit, onCancel }:
     }
   }
 
+  // ===========================
+  // 🧱 UI
+  // ===========================
+
   return (
     <div
       role="dialog"
       aria-modal="true"
-      aria-label={mode === "edit" ? "Edit venue form" : "Create venue form"}
+      aria-labelledby="venue-form-title"
       className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex justify-center items-start pt-10 px-4 overflow-auto"
     >
       <div className="bg-[var(--color-surface)] text-[var(--color-text)] w-full max-w-3xl h-[90vh] max-h-[700px] p-6 rounded-xl shadow-xl flex flex-col">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">
+        {/* 🔹 Header */}
+        <header className="flex justify-between items-center mb-4">
+          <h2 id="venue-form-title" className="text-xl font-semibold">
             {mode === "create" ? "Create Venue" : "Edit Venue"}
           </h2>
-          <button onClick={onCancel} className="hover:text-red-500" aria-label="Cancel">
+          <button
+            onClick={onCancel}
+            type="button"
+            className="hover:text-red-500"
+            aria-label="Cancel"
+          >
             <X />
           </button>
-        </div>
+        </header>
 
-        {/* Step Indicator */}
-        <div className="flex justify-center gap-2 mb-4">
-          {steps.map((_, i) => (
-            <div
+        {/* 🔸 Step Indicator */}
+        <ol className="flex justify-center gap-2 mb-4" aria-label="Form steps">
+          {steps.map((stepObj, i) => (
+            <li
               key={i}
+              aria-current={i === step ? "step" : undefined}
               className={`w-3 h-3 rounded-full ${
                 i === step
                   ? "bg-[var(--color-primary)] scale-110"
@@ -130,23 +149,27 @@ export function VenueFormStepper({ mode, initialData = {}, onSubmit, onCancel }:
               } transition`}
             />
           ))}
-        </div>
+        </ol>
 
-        {/* Step Content */}
-        <div className="flex-1 overflow-y-auto pr-2">{steps[step].content}</div>
+        {/* 🔹 Step Content */}
+        <section className="flex-1 overflow-y-auto pr-2" aria-labelledby={`step-${step}`}>
+          {steps[step].content}
+        </section>
 
-        {/* Footer Buttons */}
+        {/* 🔸 Footer Buttons */}
         <div className="flex justify-between pt-4">
           <button
             onClick={handlePrev}
+            type="button"
             className="px-4 py-2 rounded border hover:bg-[var(--color-border)]"
           >
             {step === 0 ? "Cancel" : "Back"}
           </button>
           <button
             onClick={handleNext}
-            className="px-4 py-2 rounded bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white"
+            type="button"
             disabled={loading}
+            className="px-4 py-2 rounded bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white"
           >
             {isLastStep ? (loading ? "Saving..." : mode === "edit" ? "Update" : "Create") : "Next"}
           </button>

@@ -14,10 +14,8 @@ export type Profile = {
   };
   venueManager: boolean;
 
-  // Hvis venueManager: true
   venues?: Venue[];
 
-  // Hvis bruker har bookings
   bookings?: {
     id: string;
     dateFrom: string;

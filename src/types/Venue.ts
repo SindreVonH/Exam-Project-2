@@ -1,4 +1,3 @@
-// src/types/Venue.ts
 export type Venue = {
   id: string;
   name: string;

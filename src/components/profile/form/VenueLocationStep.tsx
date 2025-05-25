@@ -1,4 +1,3 @@
-// src/components/venue/form/VenueLocationStep.tsx
 import { Dispatch, SetStateAction } from "react";
 import type { Venue } from "../../../types/Venue";
 import { MapClickSelector } from "../../common/MapSelector";

@@ -6,10 +6,6 @@ interface Props {
   children: React.ReactNode;
 }
 
-/**
- * Wrap content that should only be accessible to logged-in users.
- * Redirects to /login if not authenticated.
- */
 export function AuthGuard({ children }: Props) {
   const { isLoggedIn } = useAuth();
   const location = useLocation();

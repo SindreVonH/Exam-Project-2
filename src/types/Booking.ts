@@ -1,5 +1,3 @@
-// src/types/Booking.ts
-
 import type { Venue } from "./Venue";
 
 // Booking type for a user profile — contains venue info

@@ -1,4 +1,3 @@
-// src/components/venue/form/VenuePricingStep.tsx
 import { Dispatch, SetStateAction } from "react";
 import type { Venue } from "../../../types/Venue";
 
@@ -8,8 +7,8 @@ interface Props {
 }
 
 export function VenuePricingStep({ data, onUpdate }: Props) {
-  const price = data.price || 0;
-  const maxGuests = data.maxGuests || 1;
+  const price = data.price;
+  const maxGuests = data.maxGuests;
   const meta = data.meta || {
     wifi: false,
     parking: false,
@@ -17,8 +16,11 @@ export function VenuePricingStep({ data, onUpdate }: Props) {
     pets: false,
   };
 
-  const handleChange = (field: keyof Venue, value: any) => {
-    onUpdate((prev) => ({ ...prev, [field]: value }));
+  const handleChange = (field: keyof Venue, value: number | undefined) => {
+    onUpdate((prev) => ({
+      ...prev,
+      [field]: isNaN(value as number) ? undefined : value,
+    }));
   };
 
   const handleMetaChange = (key: keyof Venue["meta"], checked: boolean) => {
@@ -33,31 +35,34 @@ export function VenuePricingStep({ data, onUpdate }: Props) {
 
   return (
     <div className="space-y-6">
+      {/* Price */}
       <div>
-        <label className="block mb-1 font-medium text-[var(--color-text)]">Price (NOK)</label>
+        <label className="block mb-1 font-medium text-[var(--color-text)]">Price (Dollar)</label>
         <input
           type="number"
-          value={price}
+          value={price ?? ""}
           onChange={(e) => handleChange("price", Number(e.target.value))}
-          required
-          className="w-full px-4 py-2 border rounded bg-[var(--color-background)] text-[var(--color-text)]"
+          className="w-full px-4 py-2 border rounded bg-[var(--color-background)] text-[var(--color-text)] no-spinner"
           placeholder="e.g. 1500"
+          min={0}
         />
       </div>
 
+      {/* Max Guests */}
       <div>
         <label className="block mb-1 font-medium text-[var(--color-text)]">Max Guests</label>
         <input
           type="number"
+          value={maxGuests ?? ""}
+          onChange={(e) => handleChange("maxGuests", Number(e.target.value))}
+          className="w-full px-4 py-2 border rounded bg-[var(--color-background)] text-[var(--color-text)] no-spinner"
+          placeholder="e.g. 4"
           min={1}
           max={100}
-          value={maxGuests}
-          onChange={(e) => handleChange("maxGuests", Number(e.target.value))}
-          required
-          className="w-full px-4 py-2 border rounded bg-[var(--color-background)] text-[var(--color-text)]"
         />
       </div>
 
+      {/* Amenities */}
       <div>
         <label className="block mb-2 font-medium text-[var(--color-text)]">Amenities</label>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">

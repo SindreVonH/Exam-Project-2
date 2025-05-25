@@ -2,8 +2,8 @@ import { API_BASE } from "../../constants";
 import { useAuthStore } from "../../storage/authStore";
 
 type CreateBookingData = {
-  dateFrom: string; // ISO string
-  dateTo: string; // ISO string
+  dateFrom: string;
+  dateTo: string;
   guests: number;
   venueId: string;
 };

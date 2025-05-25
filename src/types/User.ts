@@ -1,4 +1,3 @@
-// src/types/User.ts
 export type User = {
   name: string;
   email: string;

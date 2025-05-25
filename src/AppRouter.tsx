@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+// src/AppRouter.tsx
+import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/common/Navbar";
 import Footer from "./components/common/Footer";
 import HomePage from "./pages/HomePage";
@@ -10,27 +11,25 @@ import { AuthGuard } from "./components/auth/AuthGuard";
 
 export default function AppRouter() {
   return (
-    <Router>
-      <div className="flex flex-col min-h-screen">
-        <Navbar />
-        <div className="flex-1">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/venues/:id" element={<SingleVenuePage />} />
-            <Route
-              path="/profile"
-              element={
-                <AuthGuard>
-                  <ProfilePage />
-                </AuthGuard>
-              }
-            />
-          </Routes>
-        </div>
-        <Footer />
+    <div className="flex flex-col min-h-screen">
+      <Navbar />
+      <div className="flex-1">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/venues/:id" element={<SingleVenuePage />} />
+          <Route
+            path="/profile"
+            element={
+              <AuthGuard>
+                <ProfilePage />
+              </AuthGuard>
+            }
+          />
+        </Routes>
       </div>
-    </Router>
+      <Footer />
+    </div>
   );
 }
