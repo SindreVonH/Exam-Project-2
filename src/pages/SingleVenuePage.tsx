@@ -4,7 +4,7 @@ import { useRelatedVenues } from "../hooks/useRelatedVenues";
 import { useState, useEffect } from "react";
 import { BookVenueOverlay } from "../components/venue/BookingOverlay";
 import { VenueHeaderSection } from "../components/venue/HeaderSection";
-import LayoutWrapper from "../components/commen/LayoutWrapper";
+import LayoutWrapper from "../components/common/LayoutWrapper";
 import { VenueInfoSection } from "../components/venue/InfoSection";
 import { VenueLocationSection } from "../components/venue/LocationSection";
 import CompactVenuesList from "../components/venue/CompactVenuesList";

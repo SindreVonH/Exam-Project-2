@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { VenueCardHome } from "../commen/VenueCardHome";
-import { VenueCardSkeleton } from "../commen/VenueCardSkeleton";
+import { VenueCardHome } from "../common/VenueCardHome";
+import { VenueCardSkeleton } from "../common/VenueCardSkeleton";
 import { Venue } from "../../types/Venue";
 
 interface VenuesListProps {

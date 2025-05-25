@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import LayoutWrapper from "../components/commen/LayoutWrapper";
+import LayoutWrapper from "../components/common/LayoutWrapper";
 import { HeroSection } from "../components/home/HeroSection";
 import SearchSection from "../components/home/SearchSection";
 import SortButtons from "../components/home/SortButtons";

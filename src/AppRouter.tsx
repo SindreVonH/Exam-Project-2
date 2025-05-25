@@ -1,7 +1,7 @@
 // src/AppRouter.tsx
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/commen/Navbar";
-import Footer from "./components/commen/Footer"; // 👈 legg til denne
+import Navbar from "./components/common/Navbar";
+import Footer from "./components/common/Footer"; // 👈 legg til denne
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";

@@ -8,7 +8,7 @@ import { EditBookingOverlay } from "../components/profile/EditBookingOverLay";
 import { EditProfileOverlay } from "../components/profile/EditProfileFormOverlay";
 import { deleteBooking } from "../lib/api/bookings/deleteBooking";
 import { deleteVenue } from "../lib/api/venues/deleteVenue";
-import LayoutWrapper from "../components/commen/LayoutWrapper";
+import LayoutWrapper from "../components/common/LayoutWrapper";
 import { toast } from "react-hot-toast";
 import { ProfileSkeleton } from "../components/profile/ProfileSkeleton";
 import type { UserBooking } from "../types/Booking";
