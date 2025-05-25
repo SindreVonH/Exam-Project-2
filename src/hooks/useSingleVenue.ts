@@ -1,4 +1,3 @@
-// src/hooks/useSingleVenue.ts
 import { useEffect, useState } from "react";
 import { getSingleVenue } from "../lib/api/venues/getSingleVenue";
 import type { Venue } from "../types/Venue";

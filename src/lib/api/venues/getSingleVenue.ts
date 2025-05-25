@@ -1,4 +1,3 @@
-// src/lib/api/venues/getSingleVenue.ts
 import { API_BASE } from "../../constants";
 import type { Venue } from "../../../types/Venue";
 

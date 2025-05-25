@@ -14,7 +14,7 @@ export function useVenueWithBookings(id: string) {
       try {
         setIsLoading(true);
         setIsError(false);
-        const { data } = await getSingleVenue(id); // This already includes _bookings & _owner
+        const { data } = await getSingleVenue(id);
         setVenue(data);
       } catch (error) {
         console.error("Failed to fetch venue with bookings:", error);

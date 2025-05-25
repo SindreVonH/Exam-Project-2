@@ -7,7 +7,7 @@ interface Props {
 }
 
 const DEFAULT_POSITION = {
-  lat: 59.9139, // Oslo
+  lat: 59.9139,
   lng: 10.7522,
 };
 

@@ -1,4 +1,3 @@
-// src/hooks/useVenueSearch.ts
 import { useEffect, useState } from "react";
 import { getVenues } from "../lib/api/venues/getVenues";
 import type { Venue } from "../types/Venue";

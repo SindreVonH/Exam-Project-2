@@ -1,4 +1,3 @@
-// src/lib/api/profile/updateProfile.ts
 import { API_BASE } from "../../constants";
 import { useAuthStore } from "../../storage/authStore";
 

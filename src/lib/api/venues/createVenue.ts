@@ -1,4 +1,3 @@
-// src/lib/api/venues/createVenue.ts
 import { API_BASE } from "../../constants";
 import { useAuthStore } from "../../storage/authStore";
 

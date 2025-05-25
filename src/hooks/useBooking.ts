@@ -31,7 +31,6 @@ export function useBooking(venue: Venue, onSuccess: () => void) {
       return;
     }
 
-    // 🛑 Blokker overlap
     const selectedFrom = range.from.getTime();
     const selectedTo = range.to.getTime();
     const overlaps = venue.bookings?.some((b) => {

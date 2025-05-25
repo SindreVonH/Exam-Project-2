@@ -138,7 +138,7 @@ export function VenueFormStepper({ mode, initialData = {}, onSubmit, onCancel }:
 
         {/* 🔸 Step Indicator */}
         <ol className="flex justify-center gap-2 mb-4" aria-label="Form steps">
-          {steps.map((stepObj, i) => (
+          {steps.map((_, i) => (
             <li
               key={i}
               aria-current={i === step ? "step" : undefined}

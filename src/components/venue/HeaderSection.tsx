@@ -2,7 +2,7 @@ import { Venue } from "../../types/Venue";
 import { Star } from "lucide-react";
 import { useMediaQuery } from "react-responsive";
 import { VenueImageCarousel } from "./ImageCarousel";
-import { BookNowButton } from "../common/BooknowButton"; // 👈 import ny knapp
+import { BookNowButton } from "../common/BooknowButton";
 
 interface Props {
   venue: Venue;

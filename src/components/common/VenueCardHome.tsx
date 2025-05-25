@@ -50,7 +50,7 @@ export function VenueCardHome({ venue }: Props) {
         {/* View Details */}
         <button
           onClick={(e) => {
-            e.stopPropagation(); // Prevent click from bubbling to article
+            e.stopPropagation();
             navigate(`/venues/${id}`);
           }}
           className="self-start px-4 sm:px-5 py-2 rounded bg-[var(--color-border)] text-sm sm:text-[24px] text-[var(--color-text)] font-medium hover:bg-[var(--color-text)]/20 transition"

@@ -7,7 +7,6 @@ interface Props {
 }
 
 export function VenueBookingCalendar({ bookings }: Props) {
-  // 🎨 Roterende fargeklasser for forskjellige bookinger
   const bookingColors = [
     "bg-blue-600",
     "bg-green-600",
@@ -32,7 +31,6 @@ export function VenueBookingCalendar({ bookings }: Props) {
     const endKey = `bookingEnd-${index}`;
 
     if (days.length === 1) {
-      // Én-dagers booking: rund hele
       modifiers[startKey] = [start];
       modifiersClassNames[startKey] = `${color} text-white rounded-md`;
     } else {

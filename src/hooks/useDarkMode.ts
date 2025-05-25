@@ -7,7 +7,6 @@ export function useDarkMode() {
     const stored = localStorage.getItem("theme");
     if (stored) return stored === "dark";
 
-    // fallback to system preference
     return window.matchMedia("(prefers-color-scheme: dark)").matches;
   });
 
